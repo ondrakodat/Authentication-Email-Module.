@@ -1,140 +1,91 @@
-# ComplexHotelSystem
+# Spring Boot Authentication Module
 
-**ComplexHotelSystem** is a hotel management system developed as a full-stack application. The project focuses on modern software architecture, secure authentication, modularity and separation of responsibilities between the backend and frontend.
+A reusable authentication and account management module built with Java and Spring Boot.
 
-The application is designed to provide a foundation for managing hotel operations, user accounts and hotel-related services.
+The project provides secure user authentication, registration, password recovery and email communication. It is designed to be reusable across different Spring Boot applications.
+
+## Features
+
+- User registration
+- User login and logout
+- JWT-based authentication
+- RSA-based JWT signing
+- Secure password hashing using Argon2
+- HttpOnly authentication cookies
+- CSRF protection
+- Remember Me functionality
+- Password recovery via email
+- Six-digit password reset codes
+- Reset code expiration and secure validation
+- Request rate limiting
+- Input validation
+- Centralized exception handling
 
 ## Technologies
 
-### Backend
-- **Java 25**
-- **Spring Boot 4.1.1**
-- Spring Security
-- Spring Data JPA
-- Hibernate
-- PostgreSQL
-- MapStruct
-- Maven
-- JWT (JSON Web Token)
-- Argon2 password hashing
-
-### Frontend
-- Vue 3
-- TypeScript
-- Vite
-- HTML / CSS
-
-## Architecture
-
-The backend follows a modular architecture inspired by Clean Architecture principles. The application is divided into four main modules:
-
-| Module | Responsibility |
+| Technology | Purpose |
 |---|---|
-| `domain` | Core business entities and business rules |
-| `application` | Application logic and use cases |
-| `infrastructure` | Database access and external integrations |
-| `api` | REST API, controllers and application configuration |
-
-The main goal of this structure is to separate business logic from technical implementation details and make the application easier to maintain, test and extend.
+| Java 25 | Programming language |
+| Spring Boot 4.1.1 | Backend framework |
+| Spring Security | Authentication and authorization |
+| Spring Data JPA | Database access |
+| PostgreSQL | Relational database |
+| JWT | Token-based authentication |
+| RSA | Asymmetric token signing |
+| Argon2 | Password hashing |
+| MapStruct | DTO mapping |
+| Jakarta Validation | Input validation |
+| Spring Mail | Email communication |
+| Maven | Dependency management |
+| Docker | Database containerization |
 
 ## Security
 
-Security is an important part of the application.
+The module implements several security mechanisms:
 
-Implemented security mechanisms include:
+- Passwords are hashed using Argon2.
+- JWT tokens are signed using RSA keys.
+- Authentication tokens are stored in HttpOnly cookies.
+- CSRF protection is enabled for state-changing requests.
+- Password reset codes are securely generated and hashed.
+- Reset codes expire after a limited period.
+- Rate limiting helps prevent brute-force attacks.
 
-- Spring Security for authentication and authorization.
-- JWT-based authentication.
-- HttpOnly cookies for storing authentication tokens.
-- CSRF protection for securing state-changing requests.
-- Argon2 password hashing.
-- Role-based access control.
-- Password recovery using a temporary six-digit verification code.
-- Expiration of password recovery codes.
+## Password Recovery Workflow
 
-## Backend Features
+1. User requests a password reset.
+2. The application generates a six-digit verification code.
+3. The code is hashed and stored with an expiration timestamp.
+4. An email containing the verification code is sent to the user.
+5. The user submits the code and a new password.
+6. The application validates the code and updates the password.
 
-- REST API architecture.
-- User registration and authentication.
-- User account management.
-- Password recovery.
-- Role-based authorization.
-- Database persistence using PostgreSQL.
-- Object mapping using MapStruct.
+## Project Structure
 
-## Frontend
+The application follows a modular architecture:
 
-The frontend is built with Vue 3 and TypeScript.
+- `domain` – Domain entities and business models.
+- `application` – Application services and business logic.
+- `infrastructure` – Database, email and external integrations.
+- `api` – REST controllers and API configuration.
 
-It communicates with the backend through REST endpoints and uses cookie-based authentication.
+## Configuration
 
-Current frontend functionality includes:
-- Login page.
-- Registration page.
-- Password recovery.
-- Password reset confirmation.
-- Navigation components.
+Sensitive configuration values are provided through environment variables.
 
-## Requirements
-
-To run the project locally, you need:
-
-- Java 25 or compatible JDK.
-- Maven.
-- PostgreSQL.
-- Node.js and npm.
-
-## Getting Started
-
-### 1. Clone the repository
-
-```bash
-git clone https://github.com/ondrakodat/ComplexHotelSystem.git
-cd ComplexHotelSystem
-```
-
-### 2. Configure the database
-
-Create a PostgreSQL database and configure the database connection in the backend configuration (`application.properties`).
+Example:
 
 ```properties
-spring.datasource.url=jdbc:postgresql://localhost:5432/hotelDb
-spring.datasource.username=YOUR_USERNAME
-spring.datasource.password=YOUR_PASSWORD
+spring.datasource.password=${DB_PASSWORD}
+
+app.jwt.private-key-path=${JWT_PRIVATE_KEY_PATH}
+app.jwt.public-key-path=${JWT_PUBLIC_KEY_PATH}
 ```
 
-### 3. Build the backend
+Never commit passwords, private keys, email credentials or other sensitive configuration values to the repository.
 
-```bash
-mvn clean install
-```
+## Purpose
 
-Run the Spring Boot application from the `api` module using your IDE or the appropriate Maven configuration.
+This project was developed as a reusable authentication module to demonstrate practical knowledge of Java, Spring Boot, Spring Security, JWT authentication, password security and backend application architecture.
 
-### 4. Start the frontend
-
-Navigate to the frontend directory:
-
-```bash
-cd frontend
-npm install
-npm run dev
-```
-
-The frontend development server is available at:
-
-```text
-http://localhost:5173
-```
-
-## Project Status
-
-The project is currently under active development.
-
-New functionality, improvements to security and additional hotel management features are being implemented.
-
-## Author
-
-**Ondřej Kodat**
-
-GitHub: [@ondrakodat](https://github.com/ondrakodat)
+## Needs to implements Rate Limiter with Redis 
